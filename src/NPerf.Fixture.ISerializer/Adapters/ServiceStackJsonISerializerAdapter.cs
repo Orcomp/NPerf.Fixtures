@@ -6,6 +6,9 @@
     {
         public string Serialize(T theObject)
         {
+            JsConfig.ConvertObjectTypesIntoStringDictionary = false;
+            JsConfig.ExcludeTypeInfo = true;
+            JsConfig.IncludeNullValues = true;
             return JsonSerializer.SerializeToString(theObject, typeof(T));
         }
 

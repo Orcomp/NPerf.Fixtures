@@ -9,17 +9,21 @@
     public class ObjectRandomizerHelper
     {
         private static Random r = new Random();
-        private const int NATTRIBUTES = 10;
+        private const int ARRAY_SIZE = 10;
         private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         public static object RandomSimpleObject()
         {
-            var obj = new Dictionary<object, object>();
-            for (var i = 0; i < NATTRIBUTES; i++)
+            var obj = new RandomObjectClass
+                {
+                    TheInteger = r.Next(),
+                    TheString = new string(Enumerable.Repeat(chars, 8).Select(s => s[r.Next(s.Length)]).ToArray()),
+                    TheIntArray = new int[ARRAY_SIZE],
+                    TheObject = null
+                };
+            for (var i = 0; i < ARRAY_SIZE; i++)
             {
-                obj["IntProp" + i] = i;
-                obj["StringProp" + i] =
-                    new string(Enumerable.Repeat(chars, 8).Select(s => s[r.Next(s.Length)]).ToArray());
+                obj.TheIntArray[i] = r.Next();
             }
 
             return obj;
@@ -32,34 +36,54 @@
                 return RandomSimpleObject();
             }
 
-            var obj = new Dictionary<object, object>();
-            var tmp = RandomObjectOfDepth(depth - 1);
-
-            for (var i = 0; i < NATTRIBUTES; i++)
-            {
-                obj["ObjectProp" + i] = tmp;
-            }
+            var obj = (RandomObjectClass)RandomSimpleObject();
+            var tmp = (RandomObjectClass)RandomObjectOfDepth(depth - 1);
+            obj.TheObject = tmp;
 
             return obj;
         }
 
         public static object RandomObjectOfSize(int sizeInBytes)
         {
-            var obj = new Dictionary<object, object>();
-            var size = 0;
-            var i = 0;
+            var obj = new RandomObjectClass();
+            obj.TheInteger = r.Next();
+            obj.TheObject = null;
 
-            while (size < sizeInBytes)
+            var halfSize = (sizeInBytes - sizeof(int)) / 2;
+            var intCount = halfSize / sizeof(int);
+            var stringCount = halfSize / sizeof(char);
+
+            obj.TheString = new string(Enumerable.Repeat(chars, stringCount).Select(s => s[r.Next(s.Length)]).ToArray());
+            
+            obj.TheIntArray = new int[intCount]; 
+            for (var i = 0; i < intCount; i++)
             {
-                obj["IntProp" + i] = r.Next();
-                var str = new string(Enumerable.Repeat(chars, 8).Select(s => s[r.Next(s.Length)]).ToArray());
-                obj["StringProp" + i] = str;
-                    
-                size += sizeof(int) + System.Text.ASCIIEncoding.Unicode.GetByteCount(str);
-                i++;
+                obj.TheIntArray[i] = r.Next();
             }
 
             return obj;
+        }
+    }
+
+    public class RandomObjectClass
+    {
+        public string TheString { get; set; }
+
+        public int TheInteger { get; set; }
+
+        public int[] TheIntArray { get; set; }
+
+        public RandomObjectClass TheObject { get; set; }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj.GetType() != this.GetType()) return false;
+            var tmp = (RandomObjectClass)obj;
+            var j = 0;
+            var arraysAreEquals = this.TheIntArray.All(i => i == tmp.TheIntArray[j++]);
+            return (TheInteger == tmp.TheInteger) && (TheString.Equals(tmp.TheString))
+                   && (arraysAreEquals) &&
+                   ((TheObject == null && tmp.TheObject == null)||(TheObject.Equals(tmp.TheObject)));
         }
     }
 }

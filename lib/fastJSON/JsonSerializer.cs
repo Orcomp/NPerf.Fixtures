@@ -14,7 +14,7 @@ namespace fastJSON
     {
         private StringBuilder _output = new StringBuilder();
         private StringBuilder _before = new StringBuilder();
-        readonly int _MAX_DEPTH = 10;
+        readonly int _MAX_DEPTH = 200;
         int _current_depth = 0;
         private Dictionary<string, int> _globalTypes = new Dictionary<string, int>();
         private JSONParameters _params;

@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D9501B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fastJSON", "..\lib\fastJSON\fastJSON.csproj", "{207E91B1-C9F8-4913-88E1-3549EF5F3273}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.ISerializer.Test", "NPerf.Fixture.ISerializer.Test\NPerf.Fixture.ISerializer.Test.csproj", "{0D5F9239-9E3B-4750-8F7E-423B794BCC80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{207E91B1-C9F8-4913-88E1-3549EF5F3273}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{207E91B1-C9F8-4913-88E1-3549EF5F3273}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{207E91B1-C9F8-4913-88E1-3549EF5F3273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

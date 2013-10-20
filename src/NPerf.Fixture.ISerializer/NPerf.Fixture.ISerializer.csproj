@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="Adapters\FastJsonISerializerAdapter.cs" />
     <Compile Include="Adapters\JavascriptISerializerAdapter.cs" />
-    <Compile Include="Adapters\JsonISerializerAdapter.cs" />
     <Compile Include="Adapters\NewtonSoftJsonISerializerAdapter.cs" />
     <Compile Include="Adapters\ServiceStackJsonISerializerAdapter.cs" />
     <Compile Include="Adapters\SimpleJsonISerializerAdapter.cs" />
