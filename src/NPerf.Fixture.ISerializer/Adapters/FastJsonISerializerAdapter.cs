@@ -4,8 +4,8 @@
     {
         public string Serialize(T theObject)
         {
-            //fastJSON.JSON.Instance.Parameters.UsingGlobalTypes = false;
-            //fastJSON.JSON.Instance.Parameters.UseExtensions = false;
+            fastJSON.JSON.Instance.Parameters.UsingGlobalTypes = false;
+            fastJSON.JSON.Instance.Parameters.UseExtensions = false;
             return fastJSON.JSON.Instance.ToJSON(theObject);
         }
 
