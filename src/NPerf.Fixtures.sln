@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fastJSON", "..\lib\fastJSON
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.ISerializer.Test", "NPerf.Fixture.ISerializer.Test\NPerf.Fixture.ISerializer.Test.csproj", "{0D5F9239-9E3B-4750-8F7E-423B794BCC80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.ISorter", "NPerf.Fixture.ISorter\NPerf.Fixture.ISorter.csproj", "{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.IIOCContainer", "NPerf.Fixture.IIOCContainer\NPerf.Fixture.IIOCContainer.csproj", "{D18370A5-BD93-4EDF-BC54-FAD6E1439B28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D5F9239-9E3B-4750-8F7E-423B794BCC80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18370A5-BD93-4EDF-BC54-FAD6E1439B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18370A5-BD93-4EDF-BC54-FAD6E1439B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18370A5-BD93-4EDF-BC54-FAD6E1439B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18370A5-BD93-4EDF-BC54-FAD6E1439B28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
