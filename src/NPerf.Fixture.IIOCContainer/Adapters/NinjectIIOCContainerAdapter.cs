@@ -2,17 +2,15 @@
 {
     using System;
 
-    using Fixture.IIOCContainer.Interfaces;
+    using Ninject;
 
-    using StructureMap;
-
-    public class StructureMapIIOCContainerAdapter : IIOCContainer
+    public class NinjectIIOCContainerAdapter : Interfaces.IIOCContainer
     {
-        private Container Container { get; set; }
+        private StandardKernel Kernel { get; set; }
 
-        public StructureMapIIOCContainerAdapter()
+        public NinjectIIOCContainerAdapter()
         {
-            Container = new Container();
+            this.Kernel = new StandardKernel();
         }
 
         public void RegisterType<TInt, TImp>()
@@ -22,7 +20,7 @@
 
         public void RegisterType(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Use(implementationType));
+            this.Kernel.Bind(interfaceType).To(implementationType).Named(Guid.NewGuid().ToString());
         }
 
         public void RegisterSingleton<TInt, TImp>()
@@ -32,7 +30,7 @@
 
         public void RegisterSingleton(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Singleton().Use(implementationType));
+            this.Kernel.Bind(interfaceType).To(implementationType).InSingletonScope();
         }
 
         public T Resolve<T>()
@@ -42,7 +40,7 @@
 
         public object Resolve(Type interfaceType)
         {
-            return Container.GetInstance(interfaceType);
+            return this.Kernel.Get(interfaceType);
         }
 
         public void FinishRegistering()

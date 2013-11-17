@@ -1,18 +1,15 @@
 ﻿namespace NPerf.Fixture.IIOCContainer.Adapters
 {
     using System;
+    using Dynamo.Ioc;
 
-    using Fixture.IIOCContainer.Interfaces;
-
-    using StructureMap;
-
-    public class StructureMapIIOCContainerAdapter : IIOCContainer
+    public class DynamoIIOCContainerAdapter : Interfaces.IIOCContainer
     {
-        private Container Container { get; set; }
+        private IocContainer Container { get; set; }
 
-        public StructureMapIIOCContainerAdapter()
+        public DynamoIIOCContainerAdapter()
         {
-            Container = new Container();
+            this.Container = new IocContainer();
         }
 
         public void RegisterType<TInt, TImp>()
@@ -22,7 +19,7 @@
 
         public void RegisterType(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Use(implementationType));
+            this.Container.Register(interfaceType, implementationType, Guid.NewGuid());
         }
 
         public void RegisterSingleton<TInt, TImp>()
@@ -32,7 +29,7 @@
 
         public void RegisterSingleton(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Singleton().Use(implementationType));
+            this.Container.Register(interfaceType, implementationType, null, new ContainerLifetime());
         }
 
         public T Resolve<T>()
@@ -42,7 +39,7 @@
 
         public object Resolve(Type interfaceType)
         {
-            return Container.GetInstance(interfaceType);
+            return this.Container.Resolve(interfaceType);
         }
 
         public void FinishRegistering()

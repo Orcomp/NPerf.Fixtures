@@ -2,17 +2,16 @@
 {
     using System;
 
-    using Fixture.IIOCContainer.Interfaces;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
 
-    using StructureMap;
-
-    public class StructureMapIIOCContainerAdapter : IIOCContainer
+    public class WindsorIIOCContainerAdapter : Interfaces.IIOCContainer
     {
-        private Container Container { get; set; }
+        private WindsorContainer Container { get; set; }
 
-        public StructureMapIIOCContainerAdapter()
+        public WindsorIIOCContainerAdapter()
         {
-            Container = new Container();
+            this.Container = new WindsorContainer();
         }
 
         public void RegisterType<TInt, TImp>()
@@ -22,7 +21,8 @@
 
         public void RegisterType(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Use(implementationType));
+            this.Container.Register(Component.For(interfaceType)
+                .Named(Guid.NewGuid().ToString()).ImplementedBy(implementationType));
         }
 
         public void RegisterSingleton<TInt, TImp>()
@@ -32,7 +32,7 @@
 
         public void RegisterSingleton(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Singleton().Use(implementationType));
+            this.Container.Register(Component.For(interfaceType).ImplementedBy(implementationType).LifestyleSingleton());
         }
 
         public T Resolve<T>()
@@ -42,7 +42,7 @@
 
         public object Resolve(Type interfaceType)
         {
-            return Container.GetInstance(interfaceType);
+            return this.Container.Resolve(interfaceType);
         }
 
         public void FinishRegistering()

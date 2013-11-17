@@ -21,6 +21,7 @@
         /// </summary>
         private int count;
         private List<Type> interfaceTypes;
+        private int numberOfTypes;
 
 
         /// <summary>
@@ -69,11 +70,12 @@
 
             this.interfaceTypes = new List<Type>();
             var i = 0;
-            foreach (var iimp in TypeRandomizerHelper.BaseTypesInMSCorLib())
+            var bt = TypeRandomizerHelper.BaseTypesInMSCorLib();
+
+            foreach (var iimp in bt)
             {
-                if (i >= 100) break;
                 var iint = TypeRandomizerHelper.InterfaceForTypeInMSCorLib(iimp);
-                if (iint == null)
+                if ((iint == null) || this.interfaceTypes.Contains(iint))
                 {
                     continue;
                 }
@@ -83,6 +85,7 @@
                 
                 i++;
             }
+            this.numberOfTypes = i;
 
             container.FinishRegistering();
         }
@@ -98,7 +101,7 @@
         {
             for (var i = 0; i < this.count; i++)
             {
-                container.Resolve(this.interfaceTypes[this.random.Next(100)]);
+                container.Resolve(this.interfaceTypes[this.random.Next(this.numberOfTypes)]);
             }
         }
 

@@ -2,17 +2,15 @@
 {
     using System;
 
-    using Fixture.IIOCContainer.Interfaces;
+    using Microsoft.Practices.Unity;
 
-    using StructureMap;
-
-    public class StructureMapIIOCContainerAdapter : IIOCContainer
+    public class UnityIIOCContainerAdapter : Interfaces.IIOCContainer
     {
-        private Container Container { get; set; }
+        public UnityContainer Container { get; set; }
 
-        public StructureMapIIOCContainerAdapter()
+        public UnityIIOCContainerAdapter()
         {
-            Container = new Container();
+            this.Container = new UnityContainer();
         }
 
         public void RegisterType<TInt, TImp>()
@@ -22,7 +20,7 @@
 
         public void RegisterType(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Use(implementationType));
+            this.Container.RegisterType(interfaceType, implementationType);
         }
 
         public void RegisterSingleton<TInt, TImp>()
@@ -32,7 +30,7 @@
 
         public void RegisterSingleton(Type interfaceType, Type implementationType)
         {
-            Container.Configure(x => x.For(interfaceType).Singleton().Use(implementationType));
+            this.Container.RegisterType(interfaceType, implementationType, new ContainerControlledLifetimeManager());
         }
 
         public T Resolve<T>()
@@ -42,7 +40,7 @@
 
         public object Resolve(Type interfaceType)
         {
-            return Container.GetInstance(interfaceType);
+            return this.Container.Resolve(interfaceType);
         }
 
         public void FinishRegistering()
