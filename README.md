@@ -41,6 +41,7 @@ Links to Interesting .NET Libraries
 - http://www.codeproject.com/Articles/568095/The-List-Trifecta-Part-1
 - http://www.codeproject.com/Articles/16337/Back-to-Basics-Generic-Data-Structures-and-Algorit
 - https://github.com/youknowjack1/treedictionary
+- https://github.com/SolutionsDesign/Algorithmia/
 
 IList
 ======
