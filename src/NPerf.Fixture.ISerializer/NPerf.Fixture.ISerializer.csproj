@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D6A9B2A1-4AC0-49DF-BF80-6AF8FE7CFC9B}</ProjectGuid>
+    <ProjectGuid>{85CF217C-A754-4799-8B48-C18BED4A8452}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NPerf.Fixture.ISorter</RootNamespace>
-    <AssemblyName>NPerf.Fixture.ISorter</AssemblyName>
+    <RootNamespace>NPerf.Fixture.ISerializer</RootNamespace>
+    <AssemblyName>NPerf.Fixture.ISerializer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,33 +30,53 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5, Version=1.1.1.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\C5.dll</HintPath>
+    <Reference Include="Json">
+      <HintPath>..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
     </Reference>
-    <Reference Include="Orc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=3.9.59.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Orc.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.62\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\ListISorterAdapter.cs" />
-    <Compile Include="Interfaces\ISorter.cs" />
-    <Compile Include="ISorterPerfs.cs" />
+    <Compile Include="Adapters\FastJsonISerializerAdapter.cs" />
+    <Compile Include="Adapters\JavascriptISerializerAdapter.cs" />
+    <Compile Include="Adapters\NewtonSoftJsonISerializerAdapter.cs" />
+    <Compile Include="Adapters\ServiceStackJsonISerializerAdapter.cs" />
+    <Compile Include="Adapters\SimpleJsonISerializerAdapter.cs" />
+    <Compile Include="Helpers\ObjectRandomizerHelper.cs" />
+    <Compile Include="Interfaces\ISerializer.cs" />
+    <Compile Include="ISerializerDepthPerfs.cs" />
+    <Compile Include="ISerializerPerfs.cs" />
+    <Compile Include="ISerializerSizePerfs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleJson.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NPerf\src\NPerf.Framework\NPerf.Framework.csproj">
-      <Project>{9AE192A6-2C53-4765-8C73-BAD2C030EF0A}</Project>
+      <Project>{9ae192a6-2c53-4765-8c73-bad2c030ef0a}</Project>
       <Name>NPerf.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\lib\fastJSON\fastJSON.csproj">
+      <Project>{207e91b1-c9f8-4913-88e1-3549ef5f3273}</Project>
+      <Name>fastJSON</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

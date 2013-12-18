@@ -34,7 +34,7 @@
         /// </returns>
         public int CollectionCount(int testIndex)
         {
-            return testIndex * 50000;
+            return testIndex * 50;
         }
 
         /// <summary>

@@ -1,20 +1,20 @@
 ﻿namespace NPerf.Fixture.ISorter
 {
     using System;
-    using System.Collections;
-
-    using NPerf.Framework;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Sort.Interfaces;
+    using NPerf.Framework;
 
-    [PerfTester(typeof(ISorter), 10, Description = "Sort Algorithm benchmark", FeatureDescription = "Collection size")]
+    [PerfTester(typeof(ISorter<int>), 10, Description = "Sorting Algorithm benchmark", FeatureDescription = "Collection size")]
     public class ISorterPerfs
     {
-        private ArrayList list;
+
+        private List<int> list;
 
         public int CollectionCount(int testIndex)
         {
-            int n = 0;
+            var n = 0;
 
             if (testIndex < 0)
             {
@@ -35,32 +35,32 @@
         }
 
         [PerfSetUp]
-        public void SetUp(int testIndex, ISorter sorter)
+        public void SetUp(int testIndex, ISorter<int> sorter)
         {
-            Random rnd = new Random();
-            this.list = new ArrayList();
+            var rnd = new Random();
+            this.list = new List<int>();
 
-            for (int i = 0; i < this.CollectionCount(testIndex); ++i)
+            for (var i = 0; i < this.CollectionCount(testIndex); ++i)
             {
                 this.list.Add(rnd.Next());
             }
         }
 
         [PerfTest]
-        public void Sort(ISorter sorter)
+        public void Sort(ISorter<int> sorter)
         {
             sorter.Sort(this.list);
         }
 
         [PerfTearDown]
-        public void TearDown(ISorter sorter)
+        public void TearDown(ISorter<int> sorter)
         {
             // checking up
-            for (int i = 0; i < this.list.Count - 1; ++i)
+            for (var i = 0; i < this.list.Count - 1; ++i)
             {
-                if ((int)this.list[i] > (int)this.list[i + 1])
+                if (this.list[i] > this.list[i + 1])
                 {
-                    throw new Exception("list not sorted");
+                    throw new Exception("The list is not sorted");
                 }
             }
         }

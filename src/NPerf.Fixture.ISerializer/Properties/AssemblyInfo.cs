@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NPerf.Fixture.ISorter")]
+[assembly: AssemblyTitle("NPerf.Fixture.ISerializer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NPerf.Fixture.ISorter")]
+[assembly: AssemblyProduct("NPerf.Fixture.ISerializer")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("26f4a0a0-c8eb-4c4a-8e48-b45cecfa97c8")]
+[assembly: Guid("18e44547-1240-4d27-991d-c98fb701267c")]
 
 // Version information for an assembly consists of the following four values:
 //
