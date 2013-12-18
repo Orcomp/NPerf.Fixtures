@@ -6,9 +6,9 @@ NPerf ISerializer fixture documentation
 
 Abstract
 ========
-The aim of this article is to compare the performance of several serialization algorithms for the .NET framework. In order to do so, we used the NPerf, a framework to run performance tests for any implementations of a given target interface.
+The aim of this article is to compare the performance of several serialization algorithms for the .NET framework. In order to do so, we used **NPerf**, a framework to run performance tests against any implementation of a given target interface.
 
-Serialization is a very important process on the web API’s, because it transforms all the returned objects into strings that can travel over the wire to the client programs. So it is important it is as fast as possible, as long as it has a direct impact on the time the web application spends to respond a request.
+Serialization is a very important process for web API’s, because it transforms all the returned objects into strings that can travel over the wire to the client programs. So it is important for it to be as fast as possible.
 
 
 Introduction
@@ -16,12 +16,9 @@ Introduction
 
 Wikipedia defines serialization as follows:
 
-“In computer science, in the context of data storage and transmission, serialization is the process of translating data structures or object state into a format that can be stored (for example, in a file or memory buffer, or transmitted across a network connection link) and resurrected later in the same or another computer environment”.
+*“In computer science, in the context of data storage and transmission, serialization is the process of translating data structures or object state into a format that can be stored (for example, in a file or memory buffer, or transmitted across a network connection link) and resurrected later in the same or another computer environment”.*
 
-In other words, serialization/deserialization is the process of moving an object from one computer process to another. This process is needed because each process in execution has its own memory space, so the an object on the memory space of a process has references (pointers) to other zones of memory that may not be valid in on the memory space of another process.
-
-This way, serializing an object implies flattening it, remove all the memory references and substitute them by what is referenced. This operation involves traversing the object graph, all the attributes recursively, and getting the values to build a flatten representation of it, for example, in a string.
-
+We will create NPerf fixtures to test the performance of serializing and then deserializing objects against several well known .NET libraries.
 
 The fixture
 ===========
@@ -40,26 +37,25 @@ public interface ISerializer<T>
 ```
 
 
-The tested serializers
+Serializers under test
 ----------------------
 
-These are the serializers we compared and their websites:
-+ .NET JavaScriptSerializer
-    + http://msdn.microsoft.com/library/system.web.script.serialization.javascriptserializer.aspx
-+ FastJson Serializer
-    + http://fastjson.codeplex.com/
-+ NewtonSoft Json Serializer
-    + http://json.codeplex.com/
-+ ServiceStack Json Serializer
-    + http://www.servicestack.net/docs/text-serializers/json-serializer
-+ Simple Json Serializer
-    + https://github.com/facebook-csharp-sdk/simple-json
+The serializers we compared are:
+
++ [.NET JavaScriptSerializer](http://msdn.microsoft.com/library/system.web.script.serialization.javascriptserializer.aspx)
++ [FastJson Serializer](http://fastjson.codeplex.com/)
++ [NewtonSoft Json Serializer](http://json.codeplex.com/)
++ [ServiceStack Json Serializer](http://www.servicestack.net/docs/text-serializers/json-serializer)
++ [Simple Json Serializer](https://github.com/facebook-csharp-sdk/simple-json)
 
 
-Adapting the serializers to implement ISerializer interface
+Adapting the serializers to implement the ISerializer interface
 -----------------------------------------------------------
 
-As long as there is not an ISerializer interface in the .NET framework, so the serializers do not implement a common interface, we created a simple interface for a serializer we called ISerializer and we coded some adapter clases. These clases implement ISerializer interface using each of the algorithms to be tested.
+In order to use NPerf to compare different libraries against each other, they need to implement the same interface.
+
+Unfortunately there isn't a standard serializer interface defined in the .NET framework, so none of the above mentioned libraries share an interface in common. 
+We can solve this problem by using some adapter classes. These clases implement the ISerializer interface using each of the algorithms to be tested.
 
 For example, the class NewtonSoftJsonISerializerAdapter implements ISerializer<T> interface using NewtonSoft Json package.
 
@@ -82,9 +78,9 @@ For example, the class NewtonSoftJsonISerializerAdapter implements ISerializer<T
     }
 ```
 
-This way, we could create an NPerf fixture for all the serializers targeting ISerializer interface they implement through the adapter classes.
+This way, we could create an NPerf fixture for all the serializers to be tested.
 
-It is important to remark that the adapter classes do not introduce any considerable overhead, only a method call, but it is the same for all of the serializers.
+It is important to note the adapter classes do not introduce any significant overhead, only a method call, and it is the same for all serializers.
 
 
 The performance test clases
@@ -158,9 +154,6 @@ We define the depth of an object recursively this way:
         }
 ```
 
-
-
-
 ### Serializers performance varying the depth of the objects to serialize/deserialize
 
 #### The NPerf fixture class:
@@ -194,7 +187,7 @@ We define the depth of an object recursively this way:
         }
 ```
 
-✦ In order to generate random objects with the given depth we user this helper method:
+- In order to generate random objects with the given depth we user this helper method:
 
 ```C#
         public static object RandomObjectOfDepth(int depth)
@@ -289,7 +282,7 @@ We define the depth of an object recursively this way:
         }
 ```
 
-✦ In order to generate random objects with the given size we user this helper method:
+- In order to generate random objects with the given size we user this helper method:
 
 ```C#
 public static object RandomObjectOfSize(int sizeInBytes)
@@ -362,7 +355,7 @@ The performance tests were executed in a computer with the following features:
 
 
 
-## Serializers performance results varying the number of objects to serialize/deserialize
+## Serializers performance results versus the number of objects to serialize/deserialize
 
 ### Test: Serialize - All algorithms - Time complexity
 ![Test: Serialize - All algorithms - Time complexity](img/serialize-number-all-time.png)
@@ -371,39 +364,38 @@ The performance tests were executed in a computer with the following features:
 
 ### Test: Deserialize - All algorithms - Time complexity
 ![Test: Deserialize - All algorithms - Time complexity](img/deserialize-number-all-time.png)
-+ The faster deserializer was ServiceStack, followed by FastJSON (about 2 times slower).
-+ The rest were about 3-4 times slower than ServiceStack implementation.
++ The fastest deserializer was ServiceStack (shown in blue).
++ The rest were about 3-4 times slower than ServiceStack.
 + All the algorithms have linear time complexity deserializing N objects.
 
-
 ## Serializers performance results varying the depth of the objects to serialize/deserialize
 
 ### Test: Serialize - All algorithms - Time complexity
 ![Test: Serialize - All algorithms - Time complexity](img/serialize-depth-all-time.png)
-+ The faster serializer was ServiceStack, followed by FastJSON and SimpleJSON (about 1.5 times slower).
-+ The slowest serializer was JavaScriptSerializer by a great difference.
-+ All the algorithms have linear time complexity varying the object depth.
++ The fastest serializer was ServiceStack, followed by FastJSON and SimpleJSON (about 1.5 times slower).
++ The slowest serializer was JavaScriptSerializer.
++ All the algorithms have linear time complexity against the object depth.
 
 ### Test: Deserialize - All algorithms - Time complexity
 ![Test: Deserialize - All algorithms - Time complexity](img/deserialize-depth-all-time.png)
-+ The faster deserializer was ServiceStack, followed by FastJSON and NewtonSoft(about 4 times slower).
-+ The slowest deserializers were JavaScriptSerializer and SimpleJSON by a great difference.
-+ All the algorithms have linear time complexity varying the object depth.
++ The fastest deserializer was ServiceStack, followed by FastJSON and NewtonSoft (about 4 times slower).
++ The slowest deserializers were JavaScriptSerializer and SimpleJSON.
++ All the algorithms have linear time complexity against the object depth.
 
 
 ## Serializers performance varying the size of the objects to serialize/deserialize
 
 ### Test: Serialize - All algorithms - Time complexity
 ![Test: Serialize - All algorithms - Time complexity](img/serialize-size-all-time.png)
-+ The faster serializer was ServiceStack by a great difference with the rest.
++ The fastest serializer was ServiceStack.
 + The slowest serializer was JavaScriptSerializer and NewtonSoftJsonSerializer.
-+ All the algorithms have linear time complexity varying the object size.
++ All the algorithms have linear time complexity against the object size.
 
 ### Test: Deserialize - All algorithms - Time complexity
 ![Test: Deserialize - All algorithms - Time complexity](img/deserialize-size-all-time.png)
-+ The faster deserializer was ServiceStack, followed by FastJSON and NewtonSoftJson (about 5 times slower).
-+ The slowest deserializer was JavaScriptSerializer by a great difference.
-+ All the algorithms have linear time complexity varying the object size.
++ The fastest deserializer was ServiceStack, followed by FastJSON and NewtonSoftJson (about 5 times slower).
++ The slowest deserializer was JavaScriptSerializer.
++ All the algorithms have linear time complexity against the object size.
 
 
 
@@ -440,8 +432,8 @@ Weighted rank
 | Deserialize Object size | 5x | 29x | 8x | 1x | 23x |
 | *AVERAGE* | 2.4x | 8.4x | 3.8x | **1.1x** | 7x |
 
-+ ServiceStack is about 3 times faster in average than FastJSON and NewtonSoft serializers.
-+ ServiceStack is about 8 times faster in average than SimpleJSON and JavaScriptSerializer serializers.
++ ServiceStack is about 3 times faster on average than FastJSON and NewtonSoft serializers.
++ ServiceStack is about 8 times faster on average than SimpleJSON and JavaScriptSerializer serializers.
 
 
 References
