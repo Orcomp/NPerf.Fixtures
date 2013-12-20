@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>NPerf.Fixtures</id>
+    <version>@build.number@</version>
+	<title>NPerf.Fixtures</title>
+    <authors>ovidiomanteiga,OrchestraDevs</authors>
+    <owners>ovidiomanteiga,OrchestraDevs</owners>
+
+	<description>
+	  Performance Fixtures for NPerf.
+	</description>
+	<summary>
+	</summary>
+	
+	<tags>nunit perfomance npref</tags>
+	<language>en-US</language>
+	<projectUrl>https://github.com/Orcomp/NPerf.Fixtures</projectUrl>
+  </metadata>
+</package>
