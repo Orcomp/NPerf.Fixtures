@@ -16,20 +16,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\output\debug\</OutputPath>
+    <OutputPath>..\..\output\debug\NET45\NPerf.Fixture.IDictionary\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\output\debug\NPerf.Fixture.IDictionary.XML</DocumentationFile>
+    <DocumentationFile>..\..\output\debug\NET45\NPerf.Fixture.IDictionary\NPerf.Fixture.IDictionary.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\output\release\</OutputPath>
+    <OutputPath>..\..\output\release\NET45\NPerf.Fixture.IDictionary\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\output\release\NPerf.Fixture.IDictionary.XML</DocumentationFile>
+    <DocumentationFile>..\..\output\release\NET45\NPerf.Fixture.IDictionary\NPerf.Fixture.IDictionary.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
