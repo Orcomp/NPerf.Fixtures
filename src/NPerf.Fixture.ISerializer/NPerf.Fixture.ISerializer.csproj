@@ -38,6 +38,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NPerf.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.59.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Text.3.9.62\lib\net35\ServiceStack.Text.dll</HintPath>
@@ -68,10 +72,6 @@
     <Compile Include="SimpleJson.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Framework\NPerf.Framework.csproj">
-      <Project>{9ae192a6-2c53-4765-8c73-bad2c030ef0a}</Project>
-      <Name>NPerf.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\lib\fastJSON\fastJSON.csproj">
       <Project>{207e91b1-c9f8-4913-88e1-3549ef5f3273}</Project>
       <Name>fastJSON</Name>
