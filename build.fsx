@@ -29,7 +29,7 @@ let version = File.ReadAllText(@".\version.txt")
 let solutionAssemblyInfoPath = srcDir @@ "SolutionInfo.cs"
 ////let binProjectDependencies:^string list = ["NPerf"; "fastJSON"; "Orc"; "C5"; "Langman.TreeDictionary"]
 let projectsToPackageAssemblyNames = ["NPerf.Fixture.IDictionary"; "NPerf.Fixture.IIOCContainer"; "NPerf.Fixture.IList"; "NPerf.Fixture.ISerializer"; "NPerf.Fixture.ISorter"]
-let projectsToPackageDependencies:^string list = ["JSON"; "Newtonsoft.Json"; "ServiceStack.Text"; "SimpleJson"; "Autofac"; "Castle.Core"; "Castle.Windsor";
+let projectsToPackageDependencies:^string list = ["JSON"; "Newtonsoft.Json"; "ServiceStack.Text"; "SimpleJson"; "Autofac"; "Castle.Core"; "Castle.Windsor"; "NPerf";
                                            "Dynamo.Ioc"; "Ninject"; "structuremap"; "Unity";]
 
 let outputDir = @".\output\"
