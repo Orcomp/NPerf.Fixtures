@@ -12,29 +12,30 @@ open Fake.MSTest
 // Definitions
 
 let binProjectName = "NPerf.Fixtures"
-let netVersion = "NET45"
+let netVersions = ["NET45"]
 
 let srcDir  = @".\src\"
 let deploymentDir  = @".\deployment\"
 let packagesDir = deploymentDir @@ "packages"
 
-let dllDeploymentDir = packagesDir @@ @"lib" @@ netVersion
+let dllDeploymentDirs = netVersions |> List.map(fun v -> v, packagesDir @@ "work" @@ "lib" @@ v) |> dict
 let nuspecTemplatesDir = deploymentDir @@ "templates"
 
-let nugetPath = srcDir @@ @".nuget\nuget.exe"
-let nugetPackagesDir = srcDir @@ @".\packages\"
+let nugetExePath = srcDir @@ @".nuget\nuget.exe"
+let nugetRepositoryDir = srcDir @@ @".\packages\"
 let nugetAccessKey = if File.Exists(@".\Nuget.key") then File.ReadAllText(@".\Nuget.key") else ""
 let version = File.ReadAllText(@".\version.txt")
 
-let solutionAssemblyInfo = srcDir @@ "SolutionInfo.cs"
+let solutionAssemblyInfoPath = srcDir @@ "SolutionInfo.cs"
 ////let binProjectDependencies:^string list = ["NPerf"; "fastJSON"; "Orc"; "C5"; "Langman.TreeDictionary"]
-let binProjectDependencies:^string list = ["JSON"; "Newtonsoft.Json"; "ServiceStack.Text"; "SimpleJson"; "Autofac"; "Castle.Core"; "Castle.Windsor";
+let projectsToPackageAssemblyNames = ["NPerf.Fixture.IDictionary"; "NPerf.Fixture.IIOCContainer"; "NPerf.Fixture.IList"; "NPerf.Fixture.ISerializer"; "NPerf.Fixture.ISorter"]
+let projectsToPackageDependencies:^string list = ["JSON"; "Newtonsoft.Json"; "ServiceStack.Text"; "SimpleJson"; "Autofac"; "Castle.Core"; "Castle.Windsor";
                                            "Dynamo.Ioc"; "Ninject"; "structuremap"; "Unity";]
-let binProjects = ["NPerf.Fixture.IDictionary"; "NPerf.Fixture.IIOCContainer"; "NPerf.Fixture.IList"; "NPerf.Fixture.ISerializer"; "NPerf.Fixture.ISorter"]
 
 let outputDir = @".\output\"
 let outputReleaseDir = outputDir @@ "release"//// @@ netVersion
-let outputBinDir = outputReleaseDir
+let outputBinDir = outputReleaseDir ////@@ binProjectName
+let getProjectOutputBinDirs netVersion projectName = outputBinDir @@ netVersion @@ projectName
 let testResultsDir = srcDir @@ "TestResults"
 
 let ignoreBinFiles = "*.vshost.exe"
@@ -62,11 +63,12 @@ let otherProjects = !! allProjects
 // Clean build results
 
 Target "CleanPackagesDirectory" (fun _ ->
-    CleanDirs [packagesDir]
+    CleanDirs [packagesDir; testResultsDir]
 )
 
 Target "DeleteOutputFiles" (fun _ ->
     !! (outputDir + @"\**\*.*")
+       ++ (testResultsDir + @"\**\*.*")
         -- ignoreBinFilesPattern
     |> DeleteFiles
 )
@@ -85,9 +87,9 @@ Target "DeleteOutputDirectories" (fun _ ->
 Target "UpdateAssemblyVersion" (fun _ ->
       let pattern = Regex("Assembly(|File)Version(\w*)\(.*\)")
       let result = "Assembly$1Version$2(\"" + version + "\")"
-      let content = File.ReadAllLines(solutionAssemblyInfo, Encoding.Unicode)
+      let content = File.ReadAllLines(solutionAssemblyInfoPath, Encoding.Unicode)
                     |> Array.map(fun line -> pattern.Replace(line, result, 1))
-      File.WriteAllLines(solutionAssemblyInfo, content, Encoding.Unicode)
+      File.WriteAllLines(solutionAssemblyInfoPath, content, Encoding.Unicode)
 )
 
 Target "BuildOtherProjects" (fun _ ->    
@@ -126,36 +128,33 @@ FinalTarget "CloseMSTestRunner" (fun _ ->
 
 Target "NuGet" (fun _ ->
     let nugetAccessPublishKey = getBuildParamOrDefault "nugetkey" nugetAccessKey
-    let getOutputFile projectName ext = sprintf @"%s\%s.%s" outputBinDir projectName ext
-    let getBinProjectFiles projectName =  [(getOutputFile projectName "dll")
-                                           (getOutputFile projectName "xml")]
-    let binProjectFiles = binProjects
-                             |> List.collect(fun d -> getBinProjectFiles d)
-                             |> List.filter(fun d -> File.Exists(d))
-
-    let nugetDependencies = binProjectDependencies
-                              |> List.map (fun d -> d, GetPackageVersion nugetPackagesDir d)
+    let getOutputFile netVersion projectName ext = sprintf @"%s\%s.%s" (getProjectOutputBinDirs netVersion projectName) projectName ext
+    let getBinProjectFiles netVersion projectName =  [(getOutputFile netVersion projectName "dll")
+                                                      (getOutputFile netVersion projectName "xml")]
+    let binProjectFiles netVersion = projectsToPackageAssemblyNames
+                                       |> List.collect(fun d -> getBinProjectFiles netVersion d)
+                                       |> List.filter(fun d -> File.Exists(d))
+    let nugetDependencies = projectsToPackageDependencies
+                              |> List.map (fun d -> d, GetPackageVersion nugetRepositoryDir d)
     
-    let getNupkgFile = sprintf "%s\%s.%s.nupkg" dllDeploymentDir binProjectName version
     let getNuspecFile = sprintf "%s\%s.nuspec" nuspecTemplatesDir binProjectName
 
     let preparePackage filesToPackage = 
-        CreateDir packagesDir
-        CreateDir dllDeploymentDir
-        CopyFiles dllDeploymentDir filesToPackage
+        CreateDir (packagesDir @@ "work")
+        dllDeploymentDirs.Values |> Seq.iter (fun d -> CreateDir d)
+        dllDeploymentDirs |> Seq.iter (fun d -> CopyFiles d.Value (filesToPackage d.Key))
 
     let cleanPackage name = 
-        MoveFile packagesDir getNupkgFile
-        DeleteDir (packagesDir @@ "lib")
+        DeleteDir (packagesDir @@ "work")
 
     let doPackage dependencies =   
         NuGet (fun p -> 
             {p with
                 Project = binProjectName
                 Version = version
-                ToolPath = nugetPath
-                OutputPath = dllDeploymentDir
-                WorkingDir = packagesDir
+                ToolPath = nugetExePath
+                OutputPath = packagesDir
+                WorkingDir = packagesDir @@ "work"
                 Dependencies = dependencies
                 Publish = not (String.IsNullOrEmpty nugetAccessPublishKey)
                 AccessKey = nugetAccessPublishKey })
