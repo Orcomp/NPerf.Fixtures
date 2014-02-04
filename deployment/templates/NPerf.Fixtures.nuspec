@@ -16,5 +16,6 @@
 	<tags>nunit perfomance nperf</tags>
 	<language>en-US</language>
 	<projectUrl>https://github.com/Orcomp/NPerf.Fixtures</projectUrl>
+	@dependencies@
   </metadata>
 </package>
